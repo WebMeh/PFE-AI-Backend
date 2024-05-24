@@ -42,4 +42,15 @@ public class TeacherController {
         List<Cour> courses = courseService.getTeacherCourses(teacher.getUsername());
         return (courses != null && !courses.isEmpty()) ? ResponseEntity.ok(courses) : ResponseEntity.ok("Pas de cours pour vous !");
     }
+
+    // Delete a course by id
+    @DeleteMapping("/delete-course/{courseId}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Long courseId){
+        try {
+            courseService.deleteCourse(courseId);
+        }catch (RuntimeException e){
+            System.out.println("course not found exception");
+        }
+        return ResponseEntity.ok("Course N°: "+courseId+" deleted successfully! ");
+    }
 }

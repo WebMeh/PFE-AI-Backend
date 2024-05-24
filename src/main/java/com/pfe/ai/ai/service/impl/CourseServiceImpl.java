@@ -48,6 +48,18 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public void deleteCourse(Long courseId) {
+        // Check if course exists
+        Cour course = courseRepository.findById(courseId).orElse(null);
+        if (course == null) {
+            throw new RuntimeException("Course not found");
+        }
+
+        // Delete the course (cascade deletion might handle enrolled students)
+        courseRepository.delete(course);
+    }
+
+    @Override
     public List<Cour> getTeacherCourses(String username) {
         User teacher = userRepository.findByUsername(username).orElse(null);
         if(teacher == null) return null;

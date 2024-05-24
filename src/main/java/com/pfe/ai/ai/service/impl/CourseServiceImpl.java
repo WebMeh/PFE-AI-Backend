@@ -33,6 +33,21 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Cour updateCourse(Long courseId, Cour course) {
+        // Check if course exists
+        Cour existingCourse = courseRepository.findById(courseId).orElse(null);
+        if (existingCourse == null) return null;
+
+        // Update non-null fields (avoid overwriting unrelated changes)
+        existingCourse.setTitle(course.getTitle() != null ? course.getTitle() : existingCourse.getTitle());
+        existingCourse.setDescription(course.getDescription() != null ? course.getDescription() : existingCourse.getDescription());
+
+        // Update other fields as needed (e.g., learning materials)
+
+        return courseRepository.save(existingCourse); // Save the updated course
+    }
+
+    @Override
     public List<Cour> getTeacherCourses(String username) {
         User teacher = userRepository.findByUsername(username).orElse(null);
         if(teacher == null) return null;

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +39,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void enrollStudent(Long studentId, Long courseId) {
-
+    public Enrollment enrollStudent(String studentUserName, Long courseId) {
+        // Get the course from the database
+        Cour course = courseRepository.findById(courseId).orElse(null);
+        // Get the student from the database
+        User student = userRepository.findByUsername(studentUserName).orElse(null);
+        if (course == null || student == null) return null;
+        Enrollment enrollment = new Enrollment();
+        enrollment.setCourse(course);
+        enrollment.setStudent(student);
+        enrollment.setEnrollmentDate(new Date()); // Set enrollment date (optional)
+        return enrollmentRepository.save(enrollment);
     }
 
     @Override

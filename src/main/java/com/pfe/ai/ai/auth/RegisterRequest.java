@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RegisterRequest {
     private Long apg;
-
+    private Long sum;
     @NotBlank(message = "First name cannot be empty or null !")
     private String firstname;
 
@@ -28,6 +28,4 @@ public class RegisterRequest {
     @NotBlank(message = "Password cannot be empty or null !")
     @Size(min = 4, message = "Password must contain at least 4 characters")
     private String password;
-    @NotBlank(message = "user role cannot be empty or null !")
-    private String role;
 }

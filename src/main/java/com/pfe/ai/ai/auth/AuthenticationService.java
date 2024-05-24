@@ -10,6 +10,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -24,8 +27,8 @@ public class AuthenticationService {
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .username(request.getUsername())
-                .apg(request.getApg())
-                .role(request.getRole())
+                .apg(request.getApg() != null? request.getApg() : null)
+                .sum(request.getSum() != null? request.getSum() : null)
                 .password(passwordEncoder.encode(request.getPassword()))
                .build();
 

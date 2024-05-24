@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,19 +25,32 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue
     private Long id;
-    @Column(unique = true)
     private Long apg;
+    private Long sum;
     private String firstname;
     private String lastname;
     @Column(unique = true)
     private String username;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Collection<Role> roles = new ArrayList<>();
+
+    @ManyToMany // ManyToMany with Course
+    private List<Cour> courses;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        roles.forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        });
+        return authorities;
     }
 
     @Override

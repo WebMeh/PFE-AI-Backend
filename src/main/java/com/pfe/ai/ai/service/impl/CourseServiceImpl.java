@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +37,20 @@ public class CourseServiceImpl implements CourseService {
         User teacher = userRepository.findByUsername(username).orElse(null);
         if(teacher == null) return null;
         return courseRepository.findByTeacher(teacher);
+    }
+
+    @Override
+    public List<Cour> getStudentCourses(String studentUserName) {
+        User student = userRepository.findByUsername(studentUserName).orElse(null);
+        if (student == null) return null;
+        List<Enrollment> enrollments = enrollmentRepository.findAll(); // Get all enrollments
+        List<Cour> studentCourses = new ArrayList<>();
+        for (Enrollment enrollment : enrollments) {
+            if (enrollment.getStudent().getId().equals(student.getId())) {
+                studentCourses.add(enrollment.getCourse());
+            }
+        }
+        return studentCourses;
     }
 
     @Override

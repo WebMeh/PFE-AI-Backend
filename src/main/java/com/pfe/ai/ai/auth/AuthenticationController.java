@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-/* pour react app
+
 @CrossOrigin(origins = "http://localhost:5173")
- */
+
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     @PostMapping("/register")

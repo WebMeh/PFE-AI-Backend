@@ -2,6 +2,7 @@ package com.pfe.ai.ai.config;
 
 import com.pfe.ai.ai.auth.CustomBasicAuthenticationEntryPoint;
 import com.pfe.ai.ai.auth.CustomBearerTokenAuthenticationEntryPoint;
+import com.pfe.ai.ai.system.exceptions.CustomBearerTokenAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,7 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final CustomBasicAuthenticationEntryPoint basicAuthenticationEntryPoint;
     private final CustomBearerTokenAuthenticationEntryPoint bearerTokenAuthenticationEntryPoint;
-
+    private final CustomBearerTokenAccessDeniedHandler bearerTokenAccessDeniedHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -31,7 +32,10 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(basicAuthenticationEntryPoint))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-
+                .exceptionHandling(ex -> {
+                    ex.authenticationEntryPoint(bearerTokenAuthenticationEntryPoint);
+                    ex.accessDeniedHandler(bearerTokenAccessDeniedHandler);
+                })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

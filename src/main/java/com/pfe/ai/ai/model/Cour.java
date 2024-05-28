@@ -20,6 +20,8 @@ public class Cour {
 
     private String title;
     private String description;
+    private Long rate;
+    private String category;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "courses") // ManyToMany with User (students)

@@ -15,10 +15,9 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-/* Pour React App
+
 @CrossOrigin(origins = "http://localhost:5173")
 
- */
 public class UserController {
     private final AccountService accountService;
 

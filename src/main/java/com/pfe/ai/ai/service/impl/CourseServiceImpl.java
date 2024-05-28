@@ -98,13 +98,9 @@ public class CourseServiceImpl implements CourseService {
     public List<User> getEnrolledStudents(Long teacherId) {
         return  null;
     }
-        /*
-        User teacher = userRepository.findById(teacherId).orElseThrow();
-        return teacher.getCourses().stream()
-                .flatMap(course -> course.getStudents().stream())
-                .distinct() // Remove duplicates if using Enrollment entity
-                .collect(Collectors.toList());
-    }
 
-         */
+    @Override
+    public List<Cour> getAllCourses() {
+        return courseRepository.findAll();
+    }
 }

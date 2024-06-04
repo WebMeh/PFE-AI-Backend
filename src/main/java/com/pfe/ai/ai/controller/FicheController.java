@@ -3,6 +3,8 @@ package com.pfe.ai.ai.controller;
 import com.pfe.ai.ai.model.Fiche;
 import com.pfe.ai.ai.repository.FicheRepository;
 import com.pfe.ai.ai.repository.UserRepository;
+import com.pfe.ai.ai.system.Result;
+import com.pfe.ai.ai.system.StatusCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/fiche")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FicheController {
     private final FicheRepository ficheRepository;
     private final UserRepository userRepository;
@@ -24,12 +27,11 @@ public class FicheController {
 
     @GetMapping("/all/{teacherId}")
     public ResponseEntity<?> getFichesForTeacher(@PathVariable Long teacherId){
-       // List<Fiche> fiches = ficheRepository.findByTeacher_id(teacherId);
-        return ResponseEntity.ok(
-                ficheRepository.findAll()
-                        .stream()
-                        .filter(fiche -> fiche.getTeacher_id().equals(teacherId))
-                        .collect(Collectors.toList())
-        );
+       List<Fiche> fiches = ficheRepository.findAll()
+               .stream()
+               .filter(fiche -> fiche.getTeacher_id().equals(teacherId))
+               .collect(Collectors.toList());
+
+        return ResponseEntity.ok(fiches);
     }
 }

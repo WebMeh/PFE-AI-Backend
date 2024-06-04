@@ -21,7 +21,10 @@ public class PublicController {
     @GetMapping("/courses")
     public ResponseEntity<?> getAllCourses(){
         return ResponseEntity.ok(
-                courseService.getAllCourses()
+                new Result(
+                        true, StatusCode.SUCCESS, "List of all courses",
+                        courseService.getAllCourses()
+                )
         );
     }
 }

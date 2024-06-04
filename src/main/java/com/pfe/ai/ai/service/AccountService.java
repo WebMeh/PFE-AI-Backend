@@ -11,4 +11,6 @@ public interface AccountService {
     List<User> listUsers();
     User addRoleToUser(String username, String roleName);
     User findByUsername(String username);
+
+    User getUserById(Long userId);
 }

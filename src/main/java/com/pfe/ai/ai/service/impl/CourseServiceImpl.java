@@ -25,8 +25,8 @@ public class CourseServiceImpl implements CourseService {
     private final EnrollmentRepository enrollmentRepository;
 
     @Override
-    public Cour createCourse(Cour course, String username) {
-        User teacher = userRepository.findByUsername(username).orElse(null);
+    public Cour createCourse(Cour course, Long teacherId) {
+        User teacher = userRepository.findById(teacherId).orElse(null);
         if(teacher == null) return null;
         course.setTeacher(teacher); // Set the teacher of the course
         return courseRepository.save(course);
@@ -60,8 +60,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Cour> getTeacherCourses(String username) {
-        User teacher = userRepository.findByUsername(username).orElse(null);
+    public List<Cour> getTeacherCourses(Long teacherId) {
+        User teacher = userRepository.findById(teacherId).orElse(null);
         if(teacher == null) return null;
         return courseRepository.findByTeacher(teacher);
     }

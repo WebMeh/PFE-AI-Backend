@@ -1,28 +1,29 @@
 package com.pfe.ai.ai.controller;
 
 import com.pfe.ai.ai.model.Cour;
+import com.pfe.ai.ai.model.Fiche;
 import com.pfe.ai.ai.service.CourseService;
+import com.pfe.ai.ai.system.Result;
+import com.pfe.ai.ai.system.StatusCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 @RequestMapping("/teacher")
-/* Pout React app
-@CrossOrigin(origins = "http://localhost:5173")
-*/
+
 public class TeacherController {
     private final CourseService courseService;
 
     // Create new course by the teacher
-    @PostMapping("/create-course")
-    public ResponseEntity<?> createCours(@AuthenticationPrincipal UserDetails teacher, @RequestBody Cour cour){
-        Cour createdCourse = courseService.createCourse(cour ,teacher.getUsername());
+    @PostMapping("/create-course/{teacherId}")
+    public ResponseEntity<?> createCourse(@PathVariable Long teacherId, @RequestBody Cour cour){
+        Cour createdCourse = courseService.createCourse(cour ,teacherId);
         if (createdCourse == null)
             return ResponseEntity.ok("Echec de créer le cours");
         return ResponseEntity.ok(createdCourse);
@@ -37,12 +38,23 @@ public class TeacherController {
     }
 
     // Get all courses of a teacher
-    @GetMapping("/courses/all")
-    public ResponseEntity<?> getTeacherCourses(@AuthenticationPrincipal UserDetails teacher) {
-        List<Cour> courses = courseService.getTeacherCourses(teacher.getUsername());
-        return (courses != null && !courses.isEmpty()) ? ResponseEntity.ok(courses) : ResponseEntity.ok("Pas de cours pour vous !");
+    @GetMapping("/{teacherId}/courses/all")
+    public ResponseEntity<?> getTeacherCourses(@PathVariable Long teacherId) {
+        List<Cour> courses = courseService.getTeacherCourses(teacherId);
+        if (courses != null){
+            return ResponseEntity.ok(
+                    new Result(
+                            true, StatusCode.SUCCESS, "List of all courses of the teacher n°" + teacherId,
+                            courses
+                    )
+            );
+        } else {
+            return ResponseEntity.ok(
+                    new Result(true, StatusCode.SUCCESS, "Empty list ! No courses for you !" )
+            );
+        }
     }
-
+ 
     // Delete a course by id
     @DeleteMapping("/delete-course/{courseId}")
     public ResponseEntity<?> deleteCourse(@PathVariable Long courseId){
@@ -51,6 +63,9 @@ public class TeacherController {
         }catch (RuntimeException e){
             System.out.println("course not found exception");
         }
+
         return ResponseEntity.ok("Course N°: "+courseId+" deleted successfully! ");
     }
+
+    // Upload fiche
 }

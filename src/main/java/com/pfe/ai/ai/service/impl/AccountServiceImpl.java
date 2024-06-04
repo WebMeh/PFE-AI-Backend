@@ -57,4 +57,10 @@ public class AccountServiceImpl implements AccountService {
         return userRepository.findByUsername(username).orElse(null);
     }
 
+    @Override
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+
 }

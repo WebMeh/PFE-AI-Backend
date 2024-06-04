@@ -3,6 +3,8 @@ package com.pfe.ai.ai.controller;
 import com.pfe.ai.ai.model.Role;
 import com.pfe.ai.ai.model.User;
 import com.pfe.ai.ai.service.AccountService;
+import com.pfe.ai.ai.system.Result;
+import com.pfe.ai.ai.system.StatusCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,23 @@ public class UserController {
         return ResponseEntity.ok("user is null");
     }
 
+    @GetMapping("/byId/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable Long userId){
+        User user = accountService.getUserById(userId);
+        if (user != null) {
+            return ResponseEntity.ok(
+                    new Result(
+                            true, StatusCode.SUCCESS, "User by id: " + userId,
+                            user
+                    )
+            );
+        }
+        return ResponseEntity.ok(
+                new Result(
+                        false, StatusCode.NOT_FOUND, "User Not found with id: " + userId
+                )
+        );
+    }
     @GetMapping("/byUsername")
     public ResponseEntity<?> getUserByToken(@AuthenticationPrincipal UserDetails userDetails) {
         if(accountService.findByUsername(userDetails.getUsername()) != null) {

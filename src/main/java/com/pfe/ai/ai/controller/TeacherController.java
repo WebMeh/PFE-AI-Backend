@@ -54,7 +54,7 @@ public class TeacherController {
             );
         }
     }
- 
+
     // Delete a course by id
     @DeleteMapping("/delete-course/{courseId}")
     public ResponseEntity<?> deleteCourse(@PathVariable Long courseId){

@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,6 +24,10 @@ public class FicheController {
     private final UserRepository userRepository;
     @PostMapping("/create")
     public ResponseEntity<?> createFiche(@RequestBody Fiche newFiche){
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Customize the format here
+        String formattedDate = today.format(formatter);
+        newFiche.setUploadedAt(formattedDate);
         Fiche savedFiche = ficheRepository.save(newFiche);
         return ResponseEntity.ok(savedFiche);
     }

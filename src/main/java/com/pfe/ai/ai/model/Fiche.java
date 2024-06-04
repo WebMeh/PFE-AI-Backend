@@ -19,7 +19,8 @@ public class Fiche {
     private String path;
     @Column(nullable = false)
     private Long teacher_id;
-    
+    private String uploadedAt;
+
     // test git
     // another test
 }

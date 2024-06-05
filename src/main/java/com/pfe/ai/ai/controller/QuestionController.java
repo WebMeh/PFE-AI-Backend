@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/community")
+@CrossOrigin(origins = "http://localhost:5173")
 public class QuestionController {
     private final CommunityService communityService;
 

@@ -12,8 +12,8 @@ public interface CourseService {
     Cour updateCourse(Long courseId ,Cour course);
     void deleteCourse(Long courseId);
     List<Cour> getTeacherCourses(Long teacherId);
-    List<Cour> getStudentCourses(String studentUserName);
-    Enrollment enrollStudent(String studentUserName, Long courseId);
+    List<Cour> getStudentCourses(Long studentId);
+    Enrollment enrollStudent(Long userId, Long courseId);
     List<User> getEnrolledStudents(Long teacherId);
 
     List<Cour> getAllCourses();

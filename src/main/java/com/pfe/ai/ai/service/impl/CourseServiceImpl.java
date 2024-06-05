@@ -67,8 +67,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Cour> getStudentCourses(String studentUserName) {
-        User student = userRepository.findByUsername(studentUserName).orElse(null);
+    public List<Cour> getStudentCourses(Long studentId) {
+        User student = userRepository.findById(studentId).orElse(null);
         if (student == null) return null;
         List<Enrollment> enrollments = enrollmentRepository.findAll(); // Get all enrollments
         List<Cour> studentCourses = new ArrayList<>();
@@ -81,11 +81,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Enrollment enrollStudent(String studentUserName, Long courseId) {
+    public Enrollment enrollStudent(Long userId, Long courseId) {
         // Get the course from the database
         Cour course = courseRepository.findById(courseId).orElse(null);
         // Get the student from the database
-        User student = userRepository.findByUsername(studentUserName).orElse(null);
+        User student = userRepository.findById(userId).orElse(null);
         if (course == null || student == null) return null;
         Enrollment enrollment = new Enrollment();
         enrollment.setCourse(course);

@@ -44,6 +44,8 @@ public class User implements UserDetails{
     @ManyToMany // ManyToMany with Course
     private List<Cour> courses;
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();

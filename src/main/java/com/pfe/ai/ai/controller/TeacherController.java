@@ -29,6 +29,15 @@ public class TeacherController {
         return ResponseEntity.ok(createdCourse);
     }
 
+    // Get course by id
+    @GetMapping("/course/{courseId}")
+    public ResponseEntity<?> getCourseById(  @PathVariable Long courseId) {
+        Cour course = courseService.getCourseById(courseId);
+        if(course != null)
+            return ResponseEntity.ok(course);
+        return ResponseEntity.ok("Course Not Found with Id : "+ courseId);
+    }
+
     // Update course
     @PutMapping("update-course/{courseId}")
     public ResponseEntity<?> updateCourse(@PathVariable Long courseId, @RequestBody Cour updatedCourse){

@@ -9,6 +9,8 @@ import java.util.List;
 public interface CommunityService {
     List<Question> getAllQuestions();
     Question addQuestion(Question question, Long userId);
-    AnswerDto addAnswer(Long questionId, String content, Long userId);
+    Answer addAnswer(Long questionId, String content, Long userId);
     List<AnswerDto> getAnswersOfQuestion(Long questionId);
+
+    Question getQuestionById(Long questionId);
 }

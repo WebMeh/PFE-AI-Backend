@@ -18,7 +18,6 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String description;
     private Date createdDate;
     @ManyToOne
     private User user; // Asked user

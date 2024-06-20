@@ -62,5 +62,10 @@ public class AccountServiceImpl implements AccountService {
         return userRepository.findById(userId).orElse(null);
     }
 
+    @Override
+    public User getUserByToken(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
 
 }

@@ -13,4 +13,5 @@ public interface AccountService {
     User findByUsername(String username);
 
     User getUserById(Long userId);
+    User getUserByToken(String username);
 }

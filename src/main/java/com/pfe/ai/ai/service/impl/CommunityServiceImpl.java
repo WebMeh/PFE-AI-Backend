@@ -12,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,29 +35,36 @@ public class CommunityServiceImpl implements CommunityService {
     public Question addQuestion(Question question, Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if(user == null) return null;
+        question.setCreatedDate(new Date());
+        question.setAnswers(new ArrayList<>());
         question.setUser(user);
         return questionRepository.save(question);
     }
 
+
+    // Répondre à une question
     @Override
-    public AnswerDto addAnswer(Long questionId, String content, Long userId) {
+    public Answer addAnswer(Long questionId, String content, Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         Question question = questionRepository.findById(questionId).orElse(null);
         if(user == null || question == null) return null;
         Answer answer = new Answer();
         answer.setUser(user);
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        answer.setCreatedDate(currentDate.format(dateTimeFormatter));
         answer.setQuestion(question);
         answer.setContent(content);
-        Answer savedAnswer = answerRepository.save(answer);
-        return new AnswerDto(
-                savedAnswer.getId(),
-                savedAnswer.getQuestion().getId(),
-                savedAnswer.getContent()
-        );
+        return answerRepository.save(answer);
     }
 
     @Override
     public List<AnswerDto> getAnswersOfQuestion(Long questionId) {
         return answerRepository.findByQuestionId(questionId);
+    }
+
+    @Override
+    public Question getQuestionById(Long questionId) {
+        return questionRepository.findById(questionId).orElse(null);
     }
 }

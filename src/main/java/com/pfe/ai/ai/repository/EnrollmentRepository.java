@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     List<Cour> findByStudent(User student);
+
 }

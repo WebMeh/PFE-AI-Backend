@@ -1,5 +1,6 @@
 package com.pfe.ai.ai.controller;
 
+import com.pfe.ai.ai.model.Answer;
 import com.pfe.ai.ai.model.Question;
 import com.pfe.ai.ai.model.dto.AnswerDto;
 import com.pfe.ai.ai.service.CommunityService;
@@ -17,24 +18,39 @@ import java.util.List;
 public class QuestionController {
     private final CommunityService communityService;
 
+    // Get all questions asked on the community
     @GetMapping
     public ResponseEntity<?> getAllQuestions() {
         List<Question> questions = communityService.getAllQuestions();
         return ResponseEntity.ok(questions);
     }
 
+    @GetMapping("/questions/{questionId}")
+    public ResponseEntity<?> getQuestionById(@PathVariable Long questionId) {
+        Question question = communityService.getQuestionById(questionId);
+        if(question == null)
+            return ResponseEntity.ok("Question Not Found with id : "+questionId);
+        return ResponseEntity.ok(question);
+    }
+
+    // Ask new question
     @PostMapping("/ask/{userId}")
     public ResponseEntity<?> addQuestion(@RequestBody Question question, @PathVariable Long userId) {
-        return ResponseEntity.ok(communityService.addQuestion(question, userId));
+        Question savedQuestion = communityService.addQuestion(question, userId);
+        if( savedQuestion == null)
+            return ResponseEntity.ok("User Not Found with id:"+userId);
+        return ResponseEntity.ok(savedQuestion);
     }
 
     @PostMapping("/answer")
     public ResponseEntity<?> addAnswer(@RequestBody AnswerDto answerDto){
-        //return ResponseEntity.ok("question id = "+question+", user id = "+userId+"content = "+content);
-
-        return ResponseEntity.ok(communityService.addAnswer(
+        Answer savedAnswer = communityService.addAnswer(
                 answerDto.questionId(), answerDto.content(), answerDto.userId()
-        ));
+        );
+
+        if (savedAnswer == null)
+            return ResponseEntity.ok("Failed to answer");
+        return ResponseEntity.ok(savedAnswer);
 
     }
 

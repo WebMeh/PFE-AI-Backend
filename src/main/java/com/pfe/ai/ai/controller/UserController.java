@@ -29,8 +29,10 @@ public class UserController {
     }
 
     @GetMapping("/connected")
-    public ResponseEntity<String> getConnectedUser(@AuthenticationPrincipal UserDetails userDetails){
-        if(userDetails!=null) return  ResponseEntity.ok(userDetails.getUsername() );
+    public ResponseEntity<?> getConnectedUser(@AuthenticationPrincipal UserDetails userDetails){
+        User connectedUser = accountService.getUserByToken(userDetails.getUsername());
+        if(connectedUser != null)
+            return  ResponseEntity.ok(connectedUser);
         return ResponseEntity.ok("user is null");
     }
 

@@ -1,5 +1,6 @@
 package com.pfe.ai.ai.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,5 +22,6 @@ public class Answer {
     private User user;
     @ManyToOne
     @JoinColumn(name = "question_id") // Optional: Specify foreign key column name
+    @JsonIgnore
     private Question question;
 }

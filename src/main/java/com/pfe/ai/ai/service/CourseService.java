@@ -17,4 +17,6 @@ public interface CourseService {
     List<User> getEnrolledStudents(Long teacherId);
 
     List<Cour> getAllCourses();
+
+    Cour getCourseById(Long courseId);
 }
